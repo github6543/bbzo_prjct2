@@ -3,6 +3,11 @@
   <?php
   include "header.php";
   ?>
+<body>
+  <div class="btn-group btn-group-justified">
+    <a href="erfassen.php" class="btn btn-primary">Erfassen</a>
+    <a href="löschen.php" class="btn btn-primary">Löschen</a>
+  </div>
 
   <div class="table-responsive">
     <table class="table">
@@ -27,3 +32,4 @@
      </tr>
     </table>
   </div>
+</body>

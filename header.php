@@ -18,7 +18,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="index.php">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li><a href="klz.php">Klassen,Lehrer & Zimmer</a></li>
         <li><a href="wp.php">Wochen Plan</a></li>
         <li><a href="about.php">About</a></li>
