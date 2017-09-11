@@ -33,7 +33,7 @@
     </thead>
     <tbody>
    <?php
-   $button = '<a href="#" class="btn btn-info" role="button">Link Button</a> <button type="button" class="btn btn-info">Button</button>';
+   $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
    selectdb($link, $dbname);
    $sql = "SELECT * FROM Untis";
