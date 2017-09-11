@@ -1,5 +1,5 @@
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Titel</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li><a href="index.php">Home</a></li>
-        <li><a href="klz.php">Klassen,Lehrer & Zimmer</a></li>
+        <li><a href="klz.php">Klassen, Lehrer & Zimmer</a></li>
         <li><a href="wp.php">Wochen Plan</a></li>
         <li><a href="about.php">About</a></li>
       </ul>
