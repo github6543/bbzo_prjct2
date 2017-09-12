@@ -26,11 +26,11 @@
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM Untis";
+   $sql = "SELECT `Untis`.`room.name`,`Untis`.`room.longName`,`Untis`.`date`,`Untis`.`startTime`,`Untis`.`endTime`,`Untis`.`klassen`,`lehrer`.`Name` FROM `Untis` LEFT JOIN `lehrer` ON `Untis`.`teachers` =  `lehrer`.`kuerzel` ";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
-   echo "<tr><td>" . $row[3] . "</td><td>" . $row[4] . "</td><td>" . $row[0] . "</td><td>" . $row[2]. "</td><td>" . $row[14]. "</td><td>" . $row[1] . "</td><td>" . $row[16] . "</td><td>" . $button . "</td></tr>";  //$row['index'] the index here is a field name
+   echo "<tr><td>" . $row[3] . "</td><td>" . $row[4] . "</td><td>" . $row[0] . "</td><td>" . $row[2]. "</td><td>" . $row[5]. "</td><td>" . $row[1] . "</td><td>" . $row[6] . "</td></tr>";  //$row['index'] the index here is a field name
    }
     ?>
   </tbody>
