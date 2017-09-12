@@ -12,7 +12,7 @@
 <form class="form-inline" action="AddToDB.php" method="post">
   <div class="form-group">
     <label for="room.name">room.name:</label></br>
-    <input type="text" class="form-control" name="room.name">
+    <input type="text" class="form-control" id="room.name" value="<?php echo htmlspecialchars($_POST['room.name'])?>">
   </div>
   <div class="form-group">
     <label for="room.longname">room.longname:</label></br>

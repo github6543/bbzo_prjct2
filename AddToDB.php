@@ -1,4 +1,10 @@
+<!DOCTYPE html>
+<html lang="de">
+<meta charset="UTF-8">
+  <?php
+  include "header.php";
+  ?>
+
 <?php
-$a = $_POST['room.name'];
-echo $a;
+echo htmlspecialchars($_POST['room.name']);
 ?>
