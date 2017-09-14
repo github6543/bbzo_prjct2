@@ -22,6 +22,7 @@
         <li><a href="klz.php">Klassen, Lehrer & Zimmer</a></li>
         <li><a href="wp.php">Stundenplanung</a></li>
         <li><a href="rv.php">Raumverwaltung</a></li>
+        <li><a href="ebztabelle.php">EBZ</a></li>
         <li><a href="ebz.php">EBZ Kursbezeichnungen Erfassen</a></li>
         <li><a href="about.php">About</a></li>
       </ul>

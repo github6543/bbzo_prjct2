@@ -5,7 +5,7 @@ function upload(){
   //echo "test";
   $table = $_POST['upl'];
   echo $table;
-  insertUntistoDB($table);
+  insertStundenplantoDB($table);
   header('Location: index.php'); 
   exit;
 }

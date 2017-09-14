@@ -38,8 +38,9 @@
    <?php
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
+   mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM Untis";
+   $sql = "SELECT * FROM Stundenplan";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

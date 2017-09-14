@@ -31,8 +31,9 @@
    <?php
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
+   mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM `Untis` LEFT JOIN `Raumverwaltung` ON `Untis`.`room.name` = `Raumverwaltung`.`Raum` WHERE `Untis`.`room.name` LIKE `Raumverwaltung`.`Raum` AND `Untis`.`startTime` LIKE `Raumverwaltung`.`Von` AND `Untis`.`date` LIKE `Raumverwaltung`.`Datum`";
+   $sql = "SELECT * FROM `Stundenplan` LEFT JOIN `Raumverwaltung` ON `Stundenplan`.`room.name` = `Raumverwaltung`.`Raum` WHERE `Stundenplan`.`room.name` LIKE `Raumverwaltung`.`Raum` AND `Stundenplan`.`startTime` LIKE `Raumverwaltung`.`Von` AND `Stundenplan`.`date` LIKE `Raumverwaltung`.`Datum`";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

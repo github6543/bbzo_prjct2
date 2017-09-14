@@ -26,6 +26,6 @@ $activityTypename = $_POST['activityTypename'];
 $teachers = $_POST['teachers'];
 $link = dbconn();
 selectdb($link, $dbname);
-$sql = 'INSERT INTO Untis VALUES (' .'"'.$roomname.'"'.','.'"'.$roomlongname.'"'.','.'"'.$date.'"'.','.'"'.$starttime.'"'.','.'"'.$endtime.'"'.','.'"'.$bookingid.'"'.','.'"'.$bookingtype.'"'.','.'"'.$bookingFlag.'"'.','.'"'.$username.'"'.','.'"'.$replacedroomname.'"'.','.'"'.$replacedRoomlongname.'"'.','.'"'.$startDate.'"'.','.'"'.$endDate.'"'.','.'"'.$occurence.'"'.','.'"'.$klassen.'"'.','.'"'.$activityTypename.'"'.','.'"'.$teachers.'"'.')';
+$sql = 'INSERT INTO Stundenplan VALUES (' .'"'.$roomname.'"'.','.'"'.$roomlongname.'"'.','.'"'.$date.'"'.','.'"'.$starttime.'"'.','.'"'.$endtime.'"'.','.'"'.$bookingid.'"'.','.'"'.$bookingtype.'"'.','.'"'.$bookingFlag.'"'.','.'"'.$username.'"'.','.'"'.$replacedroomname.'"'.','.'"'.$replacedRoomlongname.'"'.','.'"'.$startDate.'"'.','.'"'.$endDate.'"'.','.'"'.$occurence.'"'.','.'"'.$klassen.'"'.','.'"'.$activityTypename.'"'.','.'"'.$teachers.'"'.')';
 $result = mysql_query($sql);
 ?>

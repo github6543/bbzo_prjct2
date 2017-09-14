@@ -12,7 +12,6 @@
   </h1>
   <form method="post" action="ebzfach.php">
      <p>Fachbezeichnung: <input type="text" name="Fachbezeichnung" /></p>
-     <p>Fachkuerzel: <input type="text" name="Fachkuerzel" /></p>
      <input type="submit" name="submit" value="Submit" />
   </form>
 

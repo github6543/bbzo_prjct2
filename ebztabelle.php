@@ -7,7 +7,10 @@
   $dbname = "stundenplanapp";
   ?>
 <body>
-
+  <div class="btn-group btn-group-justified">
+    <a href="ebztabelledownload.php" class="btn btn-primary">Tabelle Herunterladen</a>
+    <a href="ebz.php" class="btn btn-primary">EBZ Kursbezeichnung Erfassen</a>
+  </div></br></br>
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -31,8 +34,9 @@
    <?php
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
+   mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM `Untis`";
+   $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

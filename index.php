@@ -18,14 +18,14 @@
   Bitte Hier den Stundernplaner export Hochladen.</br>
   <form action="upload.php" method="post" enctype="multipart/form-data">
     <input type="file" name="datei"><br>
-    <input type="submit" value="Stundenplan Hochladen" name="upl">
+    <input type="submit" value="Stundenplan" name="upl">
   </form></br>
 
 
   Bitte Hier den Stundernplaner export Hochladen.</br>
     <form action="upload.php" method="post" enctype="multipart/form-data">
       <input type="file" name="datei"><br>
-      <input type="submit" value="Raumverwaltung Hochladen" name="upl">
+      <input type="submit" value="Raumverwaltung" name="upl">
     </form></br>
 
   Auf der Seite "Klassen, Lehrer & Zimmer" kann man die bestehenden Daten nachschauen,</br> neue Daten erfassen oder alte daten löschen.

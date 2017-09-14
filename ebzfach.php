@@ -11,8 +11,8 @@ $Fachbezeichnung = $_POST['Fachbezeichnung'];
 $Fachkuerzel = $_POST['Fachkuerzel'];
 $link = dbconn();
 selectdb($link, $dbname);
-$sql = 'INSERT INTO EBZ VALUES (' .'"'.$Fachbezeichnung.'"'.','.'"'.$Fachkuerzel.'"'.')';
-$result = mysql_query($sql);
+$sql = 'INSERT INTO EBZ VALUES (' .'"'.$Fachbezeichnung.'")';
+$result = mysql_query($sql); 
 echo '<h1>Die Klassenbezeichnung wurde Erfolgreich hinzugefügt</h1>';
 ?>
 <body>
@@ -25,8 +25,7 @@ echo '<h1>Die Klassenbezeichnung wurde Erfolgreich hinzugefügt</h1>';
     <table class="table table-bordered">
       <thead>
       <tr>
-        <th>Fachbezeichnung</th>
-        <th>Fachkuerzel</th>
+        <th>EBZ Klassenbezeichnung</th>
         <th></th>
       </tr>
     </thead>
@@ -34,12 +33,12 @@ echo '<h1>Die Klassenbezeichnung wurde Erfolgreich hinzugefügt</h1>';
    <?php
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
+   mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
    $sql = "SELECT * FROM EBZ";
    $result = mysql_query($sql);
-
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
-   echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>";  //$row['index'] the index here is a field name
+   echo "<tr><td>" . $row[0] . "</td></tr>";  //$row['index'] the index here is a field name
    }
     ?>
   </tbody>

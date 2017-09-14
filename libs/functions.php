@@ -1,5 +1,5 @@
 <?php
-function insertUntistoDB($table){
+function insertStundenplantoDB($table){
   include_once ("dbfunctions.php");
   $link = dbconn();
 //  echo $_FILES['datei']['tmp_name'] . "</br>";
@@ -15,7 +15,6 @@ function insertUntistoDB($table){
             $fieldnames = 0;
             createdb();
             selectdb($link, 'stundenplanapp');
-
             $sql ="DROP TABLE".$table;
             mysql_query($sql);
 
