@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <meta charset="UTF-8">
+
   <?php
   include "header.php";
   include "libs/dbfunctions.php";
   $dbname = "stundenplanapp";
   ?>
+
 <body>
   <div class="btn-group btn-group-justified">
     <a href="ebztabelledownload.php" class="btn btn-primary">Tabelle Herunterladen</a>
@@ -38,7 +40,6 @@
    selectdb($link, $dbname);
    $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
    $result = mysql_query($sql);
-
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[5] . "</td><td>" . $row[8] .
    "</td><td>" . $row[11] . "</td><td>" . $row[12] . "</td><td>" . $row[14] . "</td><td>" . $row[15] . "</td><td>" . $row[16]. "</td></tr>";  //$row['index'] the index here is a field name
