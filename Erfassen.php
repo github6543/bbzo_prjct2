@@ -6,87 +6,32 @@
   ?>
 
 <body>
-<h1>
-  Erfassen
-</h1>
-<form class="form-inline" action="AddToDB.php" method="post">
-  <div class="form-group">
-    <label for="room.name">room.name:</label></br>
-    <input type="text" class="form-control" id="room.name" value="<?php echo htmlspecialchars($_POST['room.name'])?>">
-  </div>
-  <div class="form-group">
-    <label for="room.longname">room.longname:</label></br>
-    <input type="text" class="form-control" id="room.longname">
-  </div>
-</br>
-  <div class="form-group">
-    <label for="date">date:</label></br>
-    <input type="text" class="form-control" id="date">
-  </div>
-  <div class="form-group">
-    <label for="startTime">startTime:</label></br>
-    <input type="text" class="form-control" id="startTime">
-  </div>
-  </br>
-  <div class="form-group">
-    <label for="endTime">endTime:</label></br>
-    <input type="text" class="form-control" id="endTime">
-  </div>
-  <div class="form-group">
-    <label for="bookingid">bookingid:</label></br>
-    <input type="text" class="form-control" id="bookingid">
-  </div></br>
-  <div class="form-group">
-    <label for="bookingType">bookingType:</label></br>
-    <input type="text" class="form-control" id="bookingType">
-  </div>
-  <div class="form-group">
-    <label for="bookingFlag">bookingFlag:</label></br>
-    <input type="text" class="form-control" id="bookingFlag">
-  </div>
-</br>
-  <div class="form-group">
-    <label for="user.name">user.name:</label></br>
-    <input type="text" class="form-control" id="user.name">
-  </div>
-  <div class="form-group">
-    <label for="replacedRoom.name">replacedRoom.name:</label></br>
-    <input type="text" class="form-control" id="replacedRoom.name">
-  </div>
-  </br>
-  <div class="form-group">
-    <label for="replacedRoom.longname">replacedRoom.longname:</label></br>
-    <input type="text" class="form-control" id="replacedRoom.longname">
-  </div>
-  <div class="form-group">
-    <label for="startDate">startDate:</label></br></br>
-    <input type="text" class="form-control" id="startDate">
-  </div>
-  </br>
-  <div class="form-group">
-    <label for="endDate">endDate:</label></br>
-    <input type="text" class="form-control" id="endDate">
-  </div>
-  <div class="form-group">
-    <label for="occurence">occurence:</label></br>
-    <input type="text" class="form-control" id="occurence">
-  </div>
-  </br>
-  <div class="form-group">
-    <label for="klassen">klassen:</label></br>
-    <input type="text" class="form-control" id="klassen">
-  </div>
-  <div class="form-group">
-    <label for="activityType.name">activityType.name:</label></br>
-    <input type="text" class="form-control" id="activityType.name">
-  </div>
-  </br>
-  <div class="form-group">
-      <label for="teachers">teachers:</label></br>
-      <input type="text" class="form-control" id="teachers">
-  </div></br>
-  <button type="submit" class="btn btn-default">Hinzufügen</button>
-</form>
+
+  <h1>
+    Erfassen
+  </h1>
+  <form method="post" action="AddToDB.php">
+     <p>room.name: <input type="text" name="roomname" /></p>
+     <p>room.longName: <input type="text" name="roomlongName" /></p>
+     <p>date(TT.MM.YY): <input type="text" name="date" /></p>
+     <p>startTime:: <input type="text" name="startTime" /></p>
+     <p>endTime: <input type="text" name="endTime" /></p>
+     <p>bookingid: <input type="text" name="bookingid" /></p>
+     <p>bookingType: <input type="text" name="bookingType" /></p>
+     <p>bookingFlag: <input type="text" name="bookingFlag" /></p>
+     <p>user.name: <input type="text" name="username" /></p>
+     <p>replacedRoom.name: <input type="text" name="RRN" /></p>
+     <p>replacedRoom.longname: <input type="text" name="replacedRoomlongname" /></p>
+     <p>startDate: <input type="text" name="startDate" /></p>
+     <p>endDate: <input type="text" name="endDate" /></p>
+     <p>occurence: <input type="text" name="occurence" /></p>
+     <p>klassen: <input type="text" name="klassen" /></p>
+     <p>activityType.name: <input type="text" name="activityTypename" /></p>
+     <p>teachers: <input type="text" name="teachers" /></p>
+     <input type="submit" name="submit" value="Submit" />
+  </form>
+
+
 </body>
 
 </html>
