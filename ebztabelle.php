@@ -17,32 +17,43 @@
     <table class="table table-bordered">
       <thead>
       <tr>
-        <th>Raumname</th>
-        <th>Langer Raumname </th>
+        <th>KW</th>
         <th>Datum</th>
-        <th>Start Zeit</th>
-        <th>End Zeit</th>
-        <th>Booking ID</th>
-        <th>Username</th>
-        <th>Start Datum</th>
-        <th>End Datum</th>
-        <th>Klassen</th>
-        <th>Aktivitäten Typ</th>
-        <th>Lehrer</th>
-        <th></th>
+        <th>Tag</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th>Kurs</th>
+        <th>Referent</th>
+        <th>Gebäude</th>
+        <th>Zimmer</th>
+        <th>Stock</th>
+        <th>Anz.T.</th>
+        <th>Bemerkung</th>
+        <th>Sonstiges</th>
+        <th>Schlüssel</th>
+        <th>AuftragsNr.</th>
+        <th>Infoscreen</th>
       </tr>
     </thead>
     <tbody>
    <?php
    $button = '<a href="#" class="btn btn-info" role="button">Löschen</a>';
    $link = dbconn();
-   mysql_set_charset('utf8',$link);
+   mysql_set_charset('utf8', $link);
    selectdb($link, $dbname);
-   $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
+   //______________________________________________Raumverwaltung________________________________________________________
+   $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%"';
    $result = mysql_query($sql);
-   while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
-   echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[5] . "</td><td>" . $row[8] .
-   "</td><td>" . $row[11] . "</td><td>" . $row[12] . "</td><td>" . $row[14] . "</td><td>" . $row[15] . "</td><td>" . $row[16]. "</td></tr>";  //$row['index'] the index here is a field name
+   while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+       echo "<tr><td>" . "  " . "</td><td>" . $row[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[6] . "</td><td>" . "Platzhalter Referent" .
+   "</td><td>" . $row[7]. "</td><td>" . $row[1] ."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>". "</td></tr>";  //$row['index'] the index here is a field name
+   }
+//______________________________________________StundenPlan________________________________________________________
+  $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
+   $result = mysql_query($sql);
+   while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+       echo "<tr><td>" . "  " . "</td><td>" . $row[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[14] . "</td><td>" . $row[16] .
+   "</td><td>" . $row[7]. "</td><td>" . $row[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td></tr>";  //$row['index'] the index here is a field name
    }
     ?>
   </tbody>

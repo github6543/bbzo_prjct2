@@ -33,7 +33,7 @@
    $link = dbconn();
    mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM `Stundenplan` LEFT JOIN `Raumverwaltung` ON `Stundenplan`.`room.name` = `Raumverwaltung`.`Raum` WHERE `Stundenplan`.`room.name` LIKE `Raumverwaltung`.`Raum` AND `Stundenplan`.`startTime` LIKE `Raumverwaltung`.`Von` AND `Stundenplan`.`date` LIKE `Raumverwaltung`.`Datum`";
+   $sql = "SELECT * FROM `Stundenplan` LEFT JOIN `Raumverwaltung` ON `Stundenplan`.`room.name` = `Raumverwaltung`.`Raum` WHERE `Stundenplan`.`room.name` LIKE `Raumverwaltung`.`Raum` AND `Stundenplan`.`startTime` = `Raumverwaltung`.`Von` AND `Stundenplan`.`date` = `Raumverwaltung`.`Datum` AND `Stundenplan`.`user.name` != `Raumverwaltung`.`Benutzer`";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

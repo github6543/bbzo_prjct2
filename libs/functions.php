@@ -15,12 +15,12 @@ function insertStundenplantoDB($table){
             $fieldnames = 0;
             createdb();
             selectdb($link, 'stundenplanapp');
-            $sql ="DROP TABLE".$table;
+            $sql ="TRUNCATE ".$table;
             mysql_query($sql);
 
             $sql = 'CREATE TABLE '.$table . '(';
             for ($c = 0; $c < $num; $c++) {
-                $sql .= '`' . $data[$c] . '` varchar(150)';
+                $sql .= '`' . $data[$c] . '` varchar(1500)';
                 if ($c < $num - 1) {
                     $sql .= ', ';
                 }
