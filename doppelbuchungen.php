@@ -7,13 +7,6 @@
   $dbname = "stundenplanapp";
   ?>
 <body>
-  <!--  <div class="btn-group btn-group-justified">
-      <a href="erfassen.php" class="btn btn-primary">Erfassen</a>
-      <!--  <a href="löschen.php" class="btn btn-primary">Löschen</a>
-    </div></br></br>-->
-    <div class="btn-group btn-group-justified">
-        <a href="doppelbuchungen.php" class="btn btn-primary">Doppelbuchungen Überprüfen</a>
-    </div></br></br>
 
   <div class="table-responsive">
     <table class="table table-bordered">
@@ -40,12 +33,12 @@
    $link = dbconn();
    mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * FROM Stundenplan";
+   $sql = "SELECT * FROM `Stundenplan` LEFT JOIN `Raumverwaltung` ON `Stundenplan`.`room.name` = `Raumverwaltung`.`Raum` WHERE `Stundenplan`.`room.name` LIKE `Raumverwaltung`.`Raum` AND `Stundenplan`.`startTime` = `Raumverwaltung`.`Von` AND `Stundenplan`.`date` = `Raumverwaltung`.`Datum` AND `Stundenplan`.`user.name` != `Raumverwaltung`.`Benutzer`";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[5] . "</td><td>" . $row[8] .
-   "</td><td>" . $row[11] . "</td><td>" . $row[12] . "</td><td>" . $row[14] . "</td><td>" . $row[15] . "</td><td>" . $row[16]. "</td><td>" . $button . "</td></tr>";  //$row['index'] the index here is a field name
+   "</td><td>" . $row[11] . "</td><td>" . $row[12] . "</td><td>" . $row[14] . "</td><td>" . $row[15] . "</td><td>" . $row[16]. "</td><td>" . $row[17]. "</td><td>" . $row[18]. "</td><td>" . $row[19]. "</td><td>" . $row[20]. "</td><td>" . $row[21]. "</td><td>" . $row[22]. "</td><td>" . $row[23]. "</td><td>" . $row[24 ]. "</td></tr>";  //$row['index'] the index here is a field name
    }
     ?>
   </tbody>

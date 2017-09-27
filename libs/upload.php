@@ -2,9 +2,11 @@
 function upload(){
   include_once("libs/functions.php");
   move_uploaded_file($_FILES['datei']['tmp_name'], 'uploads/'.$_FILES['datei']['name']);
-  echo "test";
-  insertUntistoDB();
-  header('Location: index.php'); //weiterleiten zur Kaschuso upload seite
+  //echo "test";
+  $table = $_POST['upl'];
+  echo $table;
+  insertStundenplantoDB($table);
+  header('Location: index.php'); 
   exit;
 }
 ?>
