@@ -51,16 +51,22 @@
        }
    }
 
-   function gebaude($gebauderow)
+   function gebaudefinder($gebauderow)
    {
-       if (preg_match('G', $gebauderow) == "1") {
+       if (preg_match('/^G/', $gebauderow) == "1") {
            $gebaude = "GIBS";
-           echo $gebaude;
-           return $gebaude;
-       } else {
-           $gebaude = "KBS";
            return $gebaude;
        }
+       else{
+         $gebaude = "KBS";
+         return $gebaude;
+       }
+   }
+
+   function getstock($gebauderow){
+
+
+
    }
 
    //______________________________________________Raumverwaltung________________________________________________________
@@ -91,8 +97,8 @@
            $gebauderow = $oldrow[1];
            $bemerkungrow = $oldrow[6];
            $bemerkung = bemerkungsfilter($bemerkungrow);
-           $gebaude = gebaude($gebauderow);
-           echo "<tr><td>" . "  " . "</td><td>" . $oldrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $oldrow[3]. "</td><td>" . $oldrow[4]. "</td><td>" . $oldrow[6] . "</td><td>" . "Platzhalter Referent" .
+           $gebaude = gebaudefinder($gebauderow);
+           echo "<tr><td>" . "" . "</td><td>" . $oldrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $oldrow[3]. "</td><td>" . $oldrow[4]. "</td><td>" . $oldrow[6] . "</td><td>" . "Platzhalter Referent" .
      "</td><td>" . $gebaude . "</td><td>" . $oldrow[1] ."</td><td>"."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $newrow;
@@ -102,9 +108,9 @@
        $gebauderow = $newrow[1];
        $bemerkungrow = $newrow[6];
        $bemerkung = bemerkungsfilter($bemerkungrow);
-       $gebaude = gebaude($gebauderow);
-       echo "<tr><td>" . "  " . "</td><td>" . $newrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $newrow[3]. "</td><td>" . $newrow[4]. "</td><td>" . $newrow[6] . "</td><td>" . "Platzhalter Referent" .
-    "</td><td>" . "" . "</td><td>" . $newrow[1] ."</td><td>"."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name
+       $gebaude = gebaudefinder($gebauderow);
+       echo "<tr><td>" . ""  . "</td><td>" . $newrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $newrow[3]. "</td><td>" . $newrow[4]. "</td><td>" . $newrow[6] . "</td><td>" . "Platzhalter Referent" .
+    "</td><td>" . $gebaude  . "</td><td>" . $newrow[1] ."</td><td>"."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name
    }
 
 //______________________________________________StundenPlan________________________________________________________
@@ -132,16 +138,20 @@ $newrow = "";
            $raum =  $row[0];
            $date = $row[2];
            $teacher = $row[16];
+           $gebauderow = $oldrow[0];
+           $gebaude = gebaudefinder($gebauderow);
            echo "<tr><td>" . "  " . "</td><td>" . $oldrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $oldrow[3]. "</td><td>" . $oldrow[4]. "</td><td>" . $oldrow[14] . "</td><td>" . $oldrow[16] .
-      "</td><td>" . $oldrow[7]. "</td><td>" . $oldrow[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
+      "</td><td>" . $gebaude . "</td><td>" . $oldrow[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $row;
            $oldrow = $newrow;
        }
    }
 if ($written == false) {
+    $gebauderow = $newrow[0];
+    $gebaude = gebaudefinder($gebauderow);
     echo "<tr><td>" . "  " . "</td><td>" . $newrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $newrow[3]. "</td><td>" . $newrow[4]. "</td><td>" . $newrow[14] . "</td><td>" . $newrow[16] .
-"</td><td>" . $newrow[7]. "</td><td>" . $newrow[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
+"</td><td>" . $gebaude . "</td><td>" . $newrow[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
 }
 
 
