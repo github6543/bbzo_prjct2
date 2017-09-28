@@ -12,7 +12,7 @@ $Fachkuerzel = $_POST['Fachkuerzel'];
 $link = dbconn();
 selectdb($link, $dbname);
 $sql = 'INSERT INTO EBZ VALUES (' .'"'.$Fachbezeichnung.'")';
-$result = mysql_query($sql); 
+$result = mysql_query($sql);
 echo '<h1>Die Klassenbezeichnung wurde Erfolgreich hinzugefügt</h1>';
 ?>
 <body>
