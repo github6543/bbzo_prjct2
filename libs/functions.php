@@ -1,15 +1,16 @@
 <?php
-function insertStundenplantoDB($table){
-  include_once ("dbfunctions.php");
-  $link = dbconn();
-//  echo $_FILES['datei']['tmp_name'] . "</br>";
-  $dataname   = $_FILES['datei']['name'];
-  //echo $dataname;
-  $fieldnames = 1;
-  $tableexists = 1;
-  ini_set("auto_detect_line_endings", true);
-  if (($handle = fopen("uploads/" . $dataname, "r")) !== FALSE) { //Datei mit entsprechend ausgewähltem dateinamen auswähläen
-    while (($data = fgetcsv($handle, 0, ";")) !== FALSE) { //csv auslesen mit ; trennung
+function insertStundenplantoDB($table)
+{
+    include_once("dbfunctions.php");
+    $link = dbconn();
+    //  echo $_FILES['datei']['tmp_name'] . "</br>";
+    $dataname   = $_FILES['datei']['name'];
+    //echo $dataname;
+    $fieldnames = 1;
+    $tableexists = 1;
+    ini_set("auto_detect_line_endings", true);
+    if (($handle = fopen("uploads/" . $dataname, "r")) !== false) { //Datei mit entsprechend ausgewähltem dateinamen auswähläen
+    while (($data = fgetcsv($handle, 0, ";")) !== false) { //csv auslesen mit ; trennung
         $num = count($data); //Datensätze zählen
         if ($fieldnames !== 0) {
             $fieldnames = 0;
@@ -26,10 +27,9 @@ function insertStundenplantoDB($table){
                 }
             } //sql-> Tabelle erstellen
             $sql .= ')';
-              //echo $sql . "</br>";
+            //echo $sql . "</br>";
             $result = mysql_query($sql); //sql übergeben (Wichtig sonst funzt SQL nicht)
-        }
-        else {
+        } else {
             $sql = 'INSERT INTO '.$table.' VALUES (';
             for ($c = 0; $c < $num; $c++) { //für jeden Datensat
                 $sql .= '"' . $data[$c] . '"';
@@ -45,7 +45,5 @@ function insertStundenplantoDB($table){
             $result = mysql_query($sql); //sql übergeben (Wichtig sonst funzt SQL nicht)
         }
     }
+    }
 }
-}
-
-?>
