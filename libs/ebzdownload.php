@@ -1,7 +1,9 @@
 <?php
+//--------------------DATEI IN ANSI SPEICHERN!!!!!!
 function download(){
     include_once("libs/csvspaltennamen.php");
     include_once("libs/dbfunctions.php");
+    include_once "libs/functions.php";
     $link = dbconn();
     selectdb($link, 'stundenplanapp');
     $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%"';
@@ -23,7 +25,12 @@ function download(){
     //Tabelle Schreiben
     $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%"';
     $result = mysql_query($sql);
+    if(mysql_num_rows($result)!=0){
     while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+	 $row = array_map( "convert", $row );
+	$row[2] = strtotime($row[2]);
+	$row[3] = strtotime($row[3]);
+	$row[4] = strtotime($row[4]);
         $newrow = $row;
         if ($raum == "0") {
             $raum =  $row[1];
@@ -34,11 +41,13 @@ function download(){
             $written = false;
             $oldrow[4] = $newrow[4];
         } else {
+	    $Tag = date('N',$oldrow[2]);
+	    $tagesbuchstaben = tagermitteln($Tag);
             $gebauderow = $oldrow[1];
             $bemerkungrow = $oldrow[6];
             $bemerkung = bemerkungsfilter($bemerkungrow);
             $gebaude = gebaudefinder($gebauderow);
-        $line = array("",$oldrow[2],"Platzhalter Tag",$oldrow[3],$oldrow[4],$oldrow[6],"",$gebaude,$oldrow[1],"","",$bemerkung,"","","","Ja");
+        $line = array(date('W',$oldrow[2]),date('d.m.Y',$oldrow[2]),$tagesbuchstaben,date('H:i',$oldrow[3]),date('H:i',$oldrow[4]),$oldrow[6],"",$gebaude,$oldrow[1],"","",$bemerkung,"","","","Ja");
             $written = true;
             $oldrow = $newrow;
             fputcsv($output, $line, ";");
@@ -49,9 +58,10 @@ function download(){
         $bemerkungrow = $newrow[6];
         $bemerkung = bemerkungsfilter($bemerkungrow);
         $gebaude = gebaudefinder($gebauderow);
-        $line = array("",$newrow[2],"Platzhalter Tag",$newrow[3],$newrow[4],$newrow[6],"",$gebaude,$newrow[1],"","",$bemerkung,"","","","Ja");
+        $line = array(date('W',$newrow[2]),date('d.m.Y',$newrow[2]),$tagesbuchstaben,date('H:i',$newrow[3]),date('H:i',$newrow[4]),$newrow[6],"",$gebaude,$newrow[1],"","",$bemerkung,"","","","Ja");
      fputcsv($output, $line, ";");
     }
+}
 
  //______________________________________________StundenPlan________________________________________________________
  //Variabeln
@@ -62,9 +72,12 @@ function download(){
  $newrow = "";
 
  //Tabelle Schreiben
-   $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
+  $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse` ORDER BY `Stundenplan`.`room.name`,`Stundenplan`.`date`,`Stundenplan`.`startTime`,`Stundenplan`.`teachers` desc";
     $result = mysql_query($sql);
     while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+	$row[2] = strtotime($row[2]);
+	$row[3] = strtotime($row[3]);
+	$row[4] = strtotime($row[4]);
         $newrow = $row;
         if ($raum == "0") {
             $raum =  $row[0];
@@ -75,13 +88,15 @@ function download(){
             $written = false;
             $oldrow[4] = $newrow[4];
         } else {
+	    $Tag = date('N',$oldrow[2]);
+	    $tagesbuchstaben = tagermitteln($Tag);
             $raum =  $row[0];
             $date = $row[2];
             $teacher = $row[16];
             $gebauderow = $oldrow[0];
             $gebaude = gebaudefinder($gebauderow);
-
-            $line = array("",$oldrow[2],"Platzhalter Tag",$oldrow[3],$oldrow[4],$oldrow[14],$oldrow[16],$gebaude,$oldrow[0],"","","","","","","Ja");
+	     $stock = getFloor($gebauderow);
+            $line = array(date('W',$oldrow[2]),date('d.m.Y',$oldrow[2]),$tagesbuchstaben,date('H:i',$oldrow[3]),date('H:i',$oldrow[4]),$oldrow[14],$oldrow[16],$gebaude,$oldrow[0],"","","","","","","Ja");
             $written = true;
             $oldrow = $row;
             $oldrow = $newrow;
@@ -91,8 +106,8 @@ function download(){
  if ($written == false) {
      $gebauderow = $newrow[0];
      $gebaude = gebaudefinder($gebauderow);
-$line = array("",$newrow[2],"Platzhalter Tag",$newrow[3],$newrow[4],$newrow[14],$newrow[16],$gebaude,$newrow[0],"","","","","","","Ja");
-fputcsv($output, $line, ";");
+	$line = array(date('W',$newrow[2]),date('d.m.Y',$newrow[2]),$tagesbuchstaben,date('H:i',$newrow[3]),date('H:i',$newrow[4]),$newrow[14],$newrow[16],$gebaude,$newrow[0],"","","","","","","Ja");
+	fputcsv($output, $line, ";");
  }
 
     fclose($output);
@@ -105,7 +120,7 @@ fputcsv($output, $line, ";");
   function bemerkungsfilter($bemerkungrow)
   {
       if (preg_match('-- e', $bemerkungrow) == "1") {
-          $bemerkung = "Raum Ã–ffnen";
+          $bemerkung = "Raum Öffnen";
           return $bemerkung;
       }
   }

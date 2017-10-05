@@ -47,3 +47,10 @@ function insertStundenplantoDB($table)
     }
     }
 }
+
+function tagermitteln($Tag){
+  $search = array("1","2","3","4","5","6","7");
+  $replace = array("MO","DI","MI","DO","FR","SA","SO",);
+  return str_replace($search, $replace, $Tag);
+
+}

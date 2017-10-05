@@ -1,3 +1,3 @@
 <?php
-$spaltenname = array("KW","Datum","Tag","Von","Bis","Kurs","Referent","GebÃ¤ude","Zimmer","Stock","Anz.T","Bemerkung","Sonstiges","SchlÃ¼ssel","AuftrasgsNr.","Infoscreen");
+$spaltenname = array("KW","Datum","Tag","Von","Bis","Kurs","Referent","Gebäude","Zimmer","Stock","Anz.T","Bemerkung","Sonstiges","Schlüssel","AuftrasgsNr.","Infoscreen");
 ?>

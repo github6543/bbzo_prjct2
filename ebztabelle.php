@@ -5,6 +5,7 @@
   <?php
   include "header.php";
   include "libs/dbfunctions.php";
+	include "libs/functions.php";
   $dbname = "stundenplanapp";
   ?>
 
@@ -12,7 +13,8 @@
   <div class="btn-group btn-group-justified">
     <a href="ebztabelledownload.php" target="_blank" class="btn btn-primary">Tabelle Herunterladen</a>
     <a href="ebz.php" class="btn btn-primary">EBZ Kursbezeichnung Erfassen</a>
-  </div></br></br>
+  </div></br>
+</br>
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -85,23 +87,29 @@
    //Tabelle Schreiben
    $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%"';
    $result = mysql_query($sql);
+   if(mysql_num_rows($result)!=0){
    while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+	$row[2] = strtotime($row[2]);
+	$row[3] = strtotime($row[3]);
+	$row[4] = strtotime($row[4]);
        $newrow = $row;
        if ($raum == "0") {
            $raum =  $row[1];
-           $date = $row[2];
+           $date =  $row[2];
            $teacher = $row[7];
            $oldrow = $row;
-       } elseif ($raum == $row[1] && $teacher == $row[7] && $date ==$row[2]) {
+       } elseif ($raum == $row[1] && $teacher == $row[7] && $date == $oldrow[2]) {
            $written = false;
            $oldrow[4] = $newrow[4];
        } else {
+	    $Tag = date('N',$oldrow[2]);
+	    $tagesbuchstaben = tagermitteln($Tag);
            $gebauderow = $oldrow[1];
            $bemerkungrow = $oldrow[6];
            $bemerkung = bemerkungsfilter($bemerkungrow);
            $gebaude = gebaudefinder($gebauderow);
-           echo "<tr><td>" . "" . "</td><td>" . $oldrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $oldrow[3]. "</td><td>" . $oldrow[4]. "</td><td>" . $oldrow[6] . "</td><td>" . "Platzhalter Referent" .
-     "</td><td>" . $gebaude . "</td><td>" . $oldrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name
+           echo "<tr><td>" . date('W',$oldrow[2]) . "</td><td>" . date('d.m.Y',$oldrow[2]) . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$oldrow[3]) . "</td><td>" .date('H:i',$oldrow[4]). "</td><td>" . $oldrow[6] . "</td><td>" . "" .
+     "</td><td>" . $gebaude . "</td><td>" . $oldrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $newrow;
        }
@@ -112,9 +120,10 @@
        $bemerkung = bemerkungsfilter($bemerkungrow);
        $gebaude = gebaudefinder($gebauderow);
        $stock = getFloor($gebauderow);
-       echo "<tr><td>" . ""  . "</td><td>" . $newrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $newrow[3]. "</td><td>" . $newrow[4]. "</td><td>" . $newrow[6] . "</td><td>" . "Platzhalter Referent" .
-    "</td><td>" . $gebaude  . "</td><td>" . $newrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name
+       echo "<tr><td>" . date('W',$newrow[2])  . "</td><td>" . date('d.m.Y',$newrow[2])  . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$newrow[3]). "</td><td>" . date('H:i',$newrow[4]). "</td><td>" . $newrow[6] . "</td><td>" . "" .
+    "</td><td>" . $gebaude  . "</td><td>" . $newrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
    }
+}
 
 //______________________________________________StundenPlan________________________________________________________
 //Variabeln
@@ -125,26 +134,36 @@ $written = false;
 $newrow = "";
 
 //Tabelle Schreiben
-  $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`";
+  $sql = "SELECT DISTINCT *
+FROM `Stundenplan`
+LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`
+WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`
+ORDER BY `Stundenplan`.`date` , `Stundenplan`.`room.name` , `Stundenplan`.`startTime` , `Stundenplan`.`teachers` DESC";
    $result = mysql_query($sql);
+if(mysql_num_rows($result)!=0){
    while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
+	$row[2] = strtotime($row[2]);
+	$row[3] = strtotime($row[3]);
+	$row[4] = strtotime($row[4]);
        $newrow = $row;
        if ($raum == "0") {
            $raum =  $row[0];
            $date = $row[2];
            $teacher = $row[16];
            $oldrow = $row;
-       } elseif ($raum == $row[0] && $date == $row[2] && $teacher == $row[16]) {
+       } elseif ($raum == $row[0] && $date == $oldrow[2] && $teacher == $row[16]) {
            $written = false;
            $oldrow[4] = $newrow[4];
        } else {
+	    $Tag = date('N',$oldrow[2]);
+	    $tagesbuchstaben = tagermitteln($Tag);
            $raum =  $row[0];
            $date = $row[2];
            $teacher = $row[16];
            $gebauderow = $oldrow[0];
            $gebaude = gebaudefinder($gebauderow);
            $stock = getFloor($gebauderow);
-           echo "<tr><td>" . "  " . "</td><td>" . $oldrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $oldrow[3]. "</td><td>" . $oldrow[4]. "</td><td>" . $oldrow[14] . "</td><td>" . $oldrow[16] .
+           echo "<tr><td>" . date('W',$oldrow[2]) . "</td><td>" . date('d.m.Y',$oldrow[2]) . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$oldrow[3]). "</td><td>" . date('H:i',$oldrow[4]). "</td><td>" . $oldrow[14] . "</td><td>" . $oldrow[16] .
       "</td><td>" . $gebaude . "</td><td>" . $oldrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $row;
@@ -155,14 +174,14 @@ if ($written == false) {
     $gebauderow = $newrow[0];
     $gebaude = gebaudefinder($gebauderow);
     $stock = getFloor($gebauderow);
-    echo "<tr><td>" . "  " . "</td><td>" . $newrow[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $newrow[3]. "</td><td>" . $newrow[4]. "</td><td>" . $newrow[14] . "</td><td>" . $newrow[16] .
+    echo "<tr><td>" . date('W',$newrow[2]) . "</td><td>" . date('d.m.Y',$newrow[2])  . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$newrow[3]). "</td><td>" . date('H:i',$newrow[4]). "</td><td>" . $newrow[14] . "</td><td>" . $newrow[16] .
 "</td><td>" . $gebaude . "</td><td>" . $newrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
 }
 
+}
 
 
-
-    /*   echo "<tr><td>" . "  " . "</td><td>" . $row[2] . "</td><td>" . "Platzhalter Tag" . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[14] . "</td><td>" . $row[16] .
+    /*   echo "<tr><td>" . "  " . "</td><td>" . $row[2] . "</td><td>" . "" . "</td><td>" . $row[3]. "</td><td>" . $row[4]. "</td><td>" . $row[14] . "</td><td>" . $row[16] .
    "</td><td>" . $row[7]. "</td><td>" . $row[0] . "</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td></tr>";  //$row['index'] the index here is a field name
    }*/
     ?>
