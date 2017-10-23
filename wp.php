@@ -27,7 +27,7 @@
    $link = dbconn();
    mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT `Stundenplan`.`room.name`,`Stundenplan`.`room.longName`,`Stundenplan`.`date`,`Stundenplan`.`startTime`,`Stundenplan`.`endTime`,`Stundenplan`.`klassen`,`lehrer`.`Name` FROM `Stundenplan` LEFT JOIN `lehrer` ON `Stundenplan`.`teachers` =  `lehrer`.`kuerzel` ";
+   $sql = "SELECT `Stundenplan`.`room.name`,`Stundenplan`.`room.longName`,`Stundenplan`.`date`,`Stundenplan`.`startTime`,`Stundenplan`.`endTime`,`Stundenplan`.`klassen`,`lehrer`.`Name` FROM `Stundenplan` LEFT JOIN `lehrer` ON `Stundenplan`.`teachers` =  `lehrer`.`kuerzel` WHERE `Stundenplan`.`Klassen` IS NOT NULL AND `Stundenplan`.`Klassen`<>''";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

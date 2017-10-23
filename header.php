@@ -1,7 +1,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Titel</title>
+  <title>BBZ Olten Buchungen</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="js/jquery.js"></script>
   <script src="js/bootstrap.js"></script>
@@ -19,10 +19,10 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li><a href="index.php">Home</a></li>
-        <li><a href="klz.php">Klassen, Lehrer & Zimmer</a></li>
+        <li><a href="buchungen.php">Buchungen</a></li>
+        <li><a href="ebztabelle.php">EBZ</a></li>
         <li><a href="wp.php">Stundenplanung</a></li>
         <li><a href="rv.php">Raumverwaltung</a></li>
-        <li><a href="ebztabelle.php">EBZ</a></li>
         <li><a href="about.php">About</a></li>
       </ul>
     </div>

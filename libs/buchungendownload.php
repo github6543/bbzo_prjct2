@@ -1,15 +1,13 @@
 <?php
 //--------------------DATEI IN ANSI SPEICHERN!!!!!!
-function download()
-{
-    include_once("libs/csvspaltennamen.php");
-    include_once("libs/dbfunctions.php");
-    include_once("libs/functions.php");
+    include_once("csvspaltennamen.php");
+    include_once("dbfunctions.php");
+    include_once("functions.php");
     $link = dbconn();
     selectdb($link, 'stundenplanapp');
-    $sql = "SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%" AND `Status` != 'Storniert' AND Raum IS NOT NULL AND Raum <>''";
+    $sql = "SELECT DISTINCT * FROM `Raumverwaltung` WHERE `Raum` IS NOT NULL AND `Raum` <>'' AND `Bemerkung`<>'' AND NOT EXISTS (SELECT * FROM `ressourcen` WHERE `ressourcen`.`Name` = `Raumverwaltung`.`Raum`) ORDER BY Datum,Von";
     header('Content-Type: text/csv; charset=UTF-8');
-    header('Content-Disposition: attachment; filename=EBZTabelle.csv');
+    header('Content-Disposition: attachment; filename=BuchungenTabelle.csv');
     $output = fopen('php://output', 'w');
     fputcsv($output, $spaltenname, ";");
 
@@ -17,7 +15,7 @@ function download()
     function bemerkungsfilter($bemerkungrow)
     {
         if (preg_match('-- e', $bemerkungrow) == "1") {
-            $bemerkung = "Raum ï¿½ffnen";
+            $bemerkung = "Raum öffnen";
             return $bemerkung;
         }
     }
@@ -54,11 +52,10 @@ function download()
     $bemerkungtocut = "";
 
     //Tabelle Schreiben
-    $sql = "SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%" AND `Status` != 'Storniert' AND Raum IS NOT NULL AND Raum <>''";
+    $sql = "SELECT DISTINCT * FROM `Raumverwaltung` WHERE `Raum` IS NOT NULL AND `Raum` <>'' AND `Bemerkung`<>'' AND NOT EXISTS (SELECT * FROM `ressourcen` WHERE `ressourcen`.`Name` = `Raumverwaltung`.`Raum`) ORDER BY Datum,Von";
     $result = mysql_query($sql);
     if (mysql_num_rows($result)!=0) {
         while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
-            $row = array_map("convert", $row);
             $row[2] = strtotime($row[2]);
             $row[3] = strtotime($row[3]);
             $row[4] = strtotime($row[4]);
@@ -100,59 +97,5 @@ function download()
         }
     }
 
-    //______________________________________________StundenPlan________________________________________________________
-    //Variabeln
-    $raum = "0";
-    $date = "0";
-    $teacher = "0";
-    $written = false;
-    $newrow = "";
-
-    //Tabelle Schreiben
-    $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse` AND `Stundenplan`.`Klassen` IS NOT NULL AND `Stundenplan`.`Klassen`<>''
-ORDER BY `Stundenplan`.`room.name`,`Stundenplan`.`date`,`Stundenplan`.`startTime`,`Stundenplan`.`teachers` desc";
-    $result = mysql_query($sql);
-    while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
-        $row[2] = strtotime($row[2]);
-        $row[3] = strtotime($row[3]);
-        $row[4] = strtotime($row[4]);
-        $newrow = $row;
-        if ($raum == "0") {
-            $raum =  $row[0];
-            $date = $row[2];
-            $teacher = $row[16];
-            $oldrow = $row;
-        } elseif ($raum == $row[0] && $date == $row[2] && $teacher == $row[16]) {
-            $written = false;
-            $oldrow[4] = $newrow[4];
-        } else {
-            $Tag = date('N', $oldrow[2]);
-            $tagesbuchstaben = tagermitteln($Tag);
-            $raum =  $row[0];
-            $date = $row[2];
-            $teacher = $row[16];
-            $bemerkungrow = $newrow[6];
-            $bemerkung = bemerkungsfilter($bemerkungrow);
-            $gebauderow = $oldrow[0];
-            $gebaude = gebaudefinder($gebauderow);
-            $stock = getFloor($gebauderow);
-            $line = array(date('W', $oldrow[2]),date('d.m.Y', $oldrow[2]),$tagesbuchstaben,date('H:i', $oldrow[3]),date('H:i', $oldrow[4]),$oldrow[14],$oldrow[16],$gebaude,$oldrow[0],$stock,"","","","","","Ja");
-            $written = true;
-            $oldrow = $row;
-            $oldrow = $newrow;
-            fputcsv($output, $line, ";");
-        }
-    }
-    if ($written == false) {
-        $bemerkungrow = $newrow[6];
-        $bemerkung = bemerkungsfilter($bemerkungrow);
-        $gebauderow = $newrow[0];
-        $gebaude = gebaudefinder($gebauderow);
-        $stock = getFloor($gebauderow);
-        $line = array(date('W', $newrow[2]),date('d.m.Y', $newrow[2]),$tagesbuchstaben,date('H:i', $newrow[3]),date('H:i', $newrow[4]),$newrow[14],$newrow[16],$gebaude,$newrow[0],$stock,"","","","","","Ja");
-        fputcsv($output, $line, ";");
-    }
-
     fclose($output);
     exit;
-}

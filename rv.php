@@ -28,7 +28,7 @@
    $link = dbconn();
    mysql_set_charset('utf8',$link);
    selectdb($link, $dbname);
-   $sql = "SELECT * From Raumverwaltung";
+   $sql = "SELECT DISTINCT * FROM Raumverwaltung WHERE Raum IS NOT NULL AND Raum <>'' ORDER BY Datum,Von";
    $result = mysql_query($sql);
 
    while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results

@@ -11,24 +11,27 @@
 </h1>
 
 <h4>
-  Auf dieser WebApp kann man die Pläne nachschauen und Dozenten + Schulraum und Zimmer erfassen.</br>
-  Die Pläne sollten immer auf dem aktuellsten stand sein.</br>
-  Darum Bitte ich sie Hier Täglich einen neuen Import Hochzuladen.</br></br>
-
-  Bitte Hier den Stundernplaner export Hochladen.</br>
+  Mit dieser WebApp kann man die manuell Erfassten Buchungen Anzeigen Lassen.</br>
+<a href="https://spdoc.bbzolten.ch/itbbzo/usan/Webapp_Buchungen/Anleitung_bbzo_buchungen_webapp.pdf?Web=1">Hier können sie die Schritt für Schritt Anleitung Herunterladen</a>
+</br>
+  Bitte nicht vergessen die aktuellen Exportdateien Hochzuladen!
+</br>
+</br>
+</br>
+  Bitte Hier den Stundenplan export Hochladen.</br>
   <form action="upload.php" method="post" enctype="multipart/form-data">
     <input type="file" name="datei"><br>
-    <input type="submit" value="Stundenplan" name="upl">
+    Bitte nach dem Auswählen Hier Klicken: <input type="submit" value="Stundenplan" name="upl">
   </form></br>
-
-
-  Bitte Hier den Stundernplaner export Hochladen.</br>
+</br>
+</br>
+</br>
+  Bitte Hier den Buchungs export Hochladen.</br>
     <form action="upload.php" method="post" enctype="multipart/form-data">
       <input type="file" name="datei"><br>
-      <input type="submit" value="Raumverwaltung" name="upl">
+      Bitte nach dem Auswählen Hier Klicken: <input type="submit" value="Raumverwaltung" name="upl">
     </form></br>
 
-  Auf der Seite "Klassen, Lehrer & Zimmer" kann man die bestehenden Daten nachschauen,</br> neue Daten erfassen oder alte daten löschen.
 </h4>
 </body>
 

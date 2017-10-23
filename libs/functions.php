@@ -54,3 +54,8 @@ function tagermitteln($Tag){
   return str_replace($search, $replace, $Tag);
 
 }
+
+function cutbemerkungrow($bemerkungtocut){
+  $bemerkungcut = explode('-- e' , $bemerkungtocut);
+  return $bemerkungcut;
+}

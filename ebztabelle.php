@@ -83,9 +83,11 @@
    $teinhemer = "";
    $bemerkung = "";
    $gebaude = "";
+   $sql = "TRUNCATE `EBZFinal`";
+   mysql_query($sql);
 
    //Tabelle Schreiben
-   $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%"';
+   $sql = 'SELECT DISTINCT * FROM Raumverwaltung WHERE Bemerkung LIKE "%EBZ%" OR "%ebz%" AND `Status` != "Storniert" AND Raum IS NOT NULL AND Raum <>""';
    $result = mysql_query($sql);
    if(mysql_num_rows($result)!=0){
    while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
@@ -107,21 +109,32 @@
            $gebauderow = $oldrow[1];
            $bemerkungrow = $oldrow[6];
            $bemerkung = bemerkungsfilter($bemerkungrow);
+           $bemerkungtocut = $oldrow[6];
+           $bemerkungcut = cutbemerkungrow($bemerkungtocut);
            $gebaude = gebaudefinder($gebauderow);
-           echo "<tr><td>" . date('W',$oldrow[2]) . "</td><td>" . date('d.m.Y',$oldrow[2]) . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$oldrow[3]) . "</td><td>" .date('H:i',$oldrow[4]). "</td><td>" . $oldrow[6] . "</td><td>" . "" .
-     "</td><td>" . $gebaude . "</td><td>" . $oldrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
+           $stock = getFloor($gebauderow);
+           $sql2 = "INSERT INTO EBZFinal Values('','".date('W', $oldrow[2])."','".date('d.m.Y', $oldrow[2])."','".$tagesbuchstaben."','".date('H:i', $oldrow[3])."','".date('H:i', $oldrow[4])."','".$bemerkungcut[0]."','','".$gebaude."','".$oldrow[1]."','".$stock."','','".$bemerkung."','".$bemerkungcut[1]."','','','')";
+           mysql_query($sql2);
+           echo "<tr><td>" . date('W',$oldrow[2]) . "</td><td>" . date('d.m.Y',$oldrow[2]) . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$oldrow[3]) . "</td><td>" .date('H:i',$oldrow[4]). "</td><td>" . $bemerkungcut[0] . "</td><td>" . "" .
+     "</td><td>" . $gebaude . "</td><td>" . $oldrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>".$bemerkungcut[1]."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $newrow;
        }
    }
    if ($written == false) {
+      $Tag = date('N',$oldrow[2]);
+     $tagesbuchstaben = tagermitteln($Tag);
        $gebauderow = $newrow[1];
        $bemerkungrow = $newrow[6];
        $bemerkung = bemerkungsfilter($bemerkungrow);
+       $bemerkungtocut = $newrow[6];
+       $bemerkungcut = cutbemerkungrow($bemerkungtocut);
        $gebaude = gebaudefinder($gebauderow);
        $stock = getFloor($gebauderow);
-       echo "<tr><td>" . date('W',$newrow[2])  . "</td><td>" . date('d.m.Y',$newrow[2])  . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$newrow[3]). "</td><td>" . date('H:i',$newrow[4]). "</td><td>" . $newrow[6] . "</td><td>" . "" .
-    "</td><td>" . $gebaude  . "</td><td>" . $newrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
+       $sql2 = "INSERT INTO EBZFinal Values('','".date('W', $newrow[2])."','".date('d.m.Y', $newrow[2])."','".$tagesbuchstaben."','".date('H:i', $newrow[3])."','".date('H:i', $newrow[4])."','".$bemerkungcut[0]."','','".$gebaude."','".$newrow[1]."','".$stock."','','".$bemerkung."','".$bemerkungcut[1]."','','','')";
+       mysql_query($sql2);
+       echo "<tr><td>" . date('W',$newrow[2])  . "</td><td>" . date('d.m.Y',$newrow[2])  . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$newrow[3]). "</td><td>" . date('H:i',$newrow[4]). "</td><td>" . $bemerkungcut[0] . "</td><td>" . "" .
+    "</td><td>" . $gebaude  . "</td><td>" . $newrow[1] ."</td><td>".$stock."</td><td>"."</td><td>".$bemerkung."</td><td>".$bemerkungcut[1]."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name
    }
 }
 
@@ -134,11 +147,8 @@ $written = false;
 $newrow = "";
 
 //Tabelle Schreiben
-  $sql = "SELECT DISTINCT *
-FROM `Stundenplan`
-LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`
-WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse`
-ORDER BY `Stundenplan`.`date` , `Stundenplan`.`room.name` , `Stundenplan`.`startTime` , `Stundenplan`.`teachers` DESC";
+  $sql = "SELECT DISTINCT * FROM `Stundenplan` LEFT JOIN `EBZ` ON `Stundenplan`.`Klassen` =  `EBZ`.`ebzklasse` WHERE `Stundenplan`.`Klassen` = `EBZ`.`ebzklasse` AND `Stundenplan`.`Klassen` IS NOT NULL AND `Stundenplan`.`Klassen`<>''
+ORDER BY `Stundenplan`.`date`,`Stundenplan`.`room.name`,`Stundenplan`.`startTime`,`Stundenplan`.`teachers` desc";
    $result = mysql_query($sql);
 if(mysql_num_rows($result)!=0){
    while ($row = mysql_fetch_array($result)) {   //Creates a loop to loop through results
@@ -163,8 +173,10 @@ if(mysql_num_rows($result)!=0){
            $gebauderow = $oldrow[0];
            $gebaude = gebaudefinder($gebauderow);
            $stock = getFloor($gebauderow);
+           $sql2 = "INSERT INTO EBZFinal Values('','".date('W', $oldrow[2])."','".date('d.m.Y', $oldrow[2])."','".$tagesbuchstaben."','".date('H:i', $oldrow[3])."','".date('H:i', $oldrow[4])."','".$oldrow[14]."','".$oldrow[16]."','".$gebaude."','".$oldrow[0]."','".$stock."','','".$bemerkung."','','','','')";
+           mysql_query($sql2);
            echo "<tr><td>" . date('W',$oldrow[2]) . "</td><td>" . date('d.m.Y',$oldrow[2]) . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$oldrow[3]). "</td><td>" . date('H:i',$oldrow[4]). "</td><td>" . $oldrow[14] . "</td><td>" . $oldrow[16] .
-      "</td><td>" . $gebaude . "</td><td>" . $oldrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
+      "</td><td>" . $gebaude . "</td><td>" . $oldrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
            $written = true;
            $oldrow = $row;
            $oldrow = $newrow;
@@ -174,8 +186,10 @@ if ($written == false) {
     $gebauderow = $newrow[0];
     $gebaude = gebaudefinder($gebauderow);
     $stock = getFloor($gebauderow);
+    $sql2 = "INSERT INTO EBZFinal Values('','".date('W', $newrow[2])."','".date('d.m.Y', $newrow[2])."','".$tagesbuchstaben."','".date('H:i', $newrow[3])."','".date('H:i', $newrow[4])."','".$newrow[14]."','".$newrow[16]."','".$gebaude."','".$newrow[0]."','".$stock."','','".$bemerkung."','','','','')";
+    mysql_query($sql2);
     echo "<tr><td>" . date('W',$newrow[2]) . "</td><td>" . date('d.m.Y',$newrow[2])  . "</td><td>" . $tagesbuchstaben . "</td><td>" . date('H:i',$newrow[3]). "</td><td>" . date('H:i',$newrow[4]). "</td><td>" . $newrow[14] . "</td><td>" . $newrow[16] .
-"</td><td>" . $gebaude . "</td><td>" . $newrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."Ja"."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
+"</td><td>" . $gebaude . "</td><td>" . $newrow[0] . "</td><td>".$stock."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>"."</td><td>".""."</td></tr>";  //$row['index'] the index here is a field name  //$row['index'] the index here is a field name
 }
 
 }
